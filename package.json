@@ -1,0 +1,20 @@
+{
+  "name": "dealers_choice_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dataBank.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon dealers_choice.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "volleyball": "^1.5.1"
+  }
+}
