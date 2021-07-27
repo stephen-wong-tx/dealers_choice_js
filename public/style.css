@@ -13,7 +13,20 @@ body {
   background-size: auto;
 }
 
-h1 {
+#guess-button {
+  background-color: transparent;
+  border: 1px solid grey;
+  border-radius: 5px;
+  width: 35%;
+  margin: auto;
+  color:#995a3d;
+}
+
+#guess-button:hover {
+  cursor: pointer;
+}
+
+h1 h2{
   color: rgb(248, 248, 221);
   font-family:Georgia, 'Times New Roman', Times, serif;
   font-size: 3em;
@@ -22,13 +35,18 @@ h1 {
   margin-bottom: 2em;
 }
 
+h2 {
+  font-size: 1.5em;
+}
+
 .h3 {
-  color:rgb(43, 42, 59);
+  color:rgb(243, 243, 243);
   font-size: 2em;
+  font-family: Helvetica, Arial, sans-serif;
 }
 #nav {
   padding-bottom: 0;
-  background-color: rgb(83, 135, 192);
+  background-color: rgb(115, 120, 126);
 }
 
 #nav ul {
@@ -37,13 +55,25 @@ h1 {
   padding: 0;
   overflow: hidden;
   background-color: rgb(83, 135, 192);
+  display: block;
+  justify-content: center;
+  align-items: center;
 }
 
 #nav li {
   float: left;
+  vertical-align: center;
 }
 
-#nav li a {
+li img {
+  width: 150px;
+  height: auto;
+  padding-bottom: 2px;
+  margin: 0 !important;
+  float: left;
+}
+
+#nav .link a {
   display: block;
   color: white;
   text-align: center;
@@ -51,8 +81,17 @@ h1 {
   text-decoration: none;
 }
 
-#nav li a:hover:not(.active) {
-  background-color: #111;
+#icon:hover {
+  background-color:slategrey;
+  cursor: pointer;
+}
+
+#nav .link:hover:not(.active) {
+  background-color:slategrey;
+}
+
+#nav .link a:hover {
+  text-decoration: underline;
 }
 
 #nav .active {
@@ -70,5 +109,57 @@ h1 {
   padding: 1rem;
   margin: 1rem;
   border-radius: 5px;
+}
+
+#hero {
+  background-size: cover;
+  height: 300px;
+  vertical-align: middle;
+  background-blend-mode: multiply;
+  background-color:darkgray;
+}
+
+#hero h1 {
+  padding-top: 4em;
+  vertical-align: middle;
+  position: relative;
+}
+
+
+@media screen and (max-width: 700px) {
+  #nav ul {
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    display: flex;
+  }
+
+  #nav li img {
+    width: 165px;
+    height: auto;
+    padding-bottom: 2px;
+    display: inline;
+    text-align: center;
+    flex: 3;
+  }
+
+  #nav li {
+    float: none;
+  }
+
+  #nav .active {
+    flex: 1;
+    background-color: transparent;
+  }
+
+  #hero {
+    height: 400px;
+    width: auto;
+    background-position: center;
+  }
+
+  #hero h1 {
+    padding-top: 5em;
+  }
 }
 
