@@ -59,7 +59,15 @@ const data = [
   {   "ID": 58,   "Mountain Peak": "North Maroon Peak",   "Mountain Range": "Elk Mountains",   "Elevation_ft": 14014,   "fourteener": "N",   "Prominence_ft": 254,   "Isolation_mi": 0.37,   "Lat": 39.076007,   "Long": -106.987058,   "Standard Route": "Northeast Ridge ",   "Distance_mi": 9.25,   "Elevation Gain_ft": 4500,   "Difficulty": "Class 4",   "Traffic Low": 1000,   "Traffic High": 3000,   "photo": "https://www.14ers.com/photos/maroongroup/peakphotos/large/200807_NMar01.jpg" }
 ]
 
+const getAllMountainRanges = () =>  [...data.reduce((result, mountain) => result.add(mountain['Mountain Range']), new Set())];
 
+const getAllPeaksFromRange = range => data.filter(mountain => mountain['Mountain Range'] === range);
+
+// Set: add, delete, has
+// Can not contain duplicates, even if you try
+
+console.log(getAllPeaksFromRange('Elk Mountains'));
+console.log('hi')
 const list = () => {
   return [...data]
 };

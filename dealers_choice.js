@@ -21,6 +21,10 @@ app.get("/", (request, response) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>The Fourteeners</title>
       <link rel="stylesheet" href="/style.css" />
+      <script src="https://kit.fontawesome.com/dc998fff98.js" crossorigin="anonymous"></script>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     </head>
     <body>
       <div id="nav">
@@ -32,8 +36,24 @@ app.get("/", (request, response) => {
       <div id="main-content">
       <h1>The Fourtneeners</h1>
       <p class="description"> <strong>Fourteener</strong> fȯr-ˈtēn-ər<br /> A mountain peek with an elevation of at least 14,000 ft (4267 m).</p>
-        <div id="guess-button">
-          <h2 id="guess-heading"><a href="/entries/${randomIdx()}">Take a guess!</a></h2>
+        <div id="card-container">
+          <div class="card">
+            <h2><i class="fas fa-mountain"></i>
+            <br />Mountain Ranges</h2>
+            <a href="/entries/ranges">Choose by location</a>
+          </div>
+          <div class="card">
+            
+            <h2><i class="fas fa-tachometer-alt"></i> 
+            <br />
+            Skill Levels</h2>
+            <a href="/entries/skill-level">Climbs from beginner to expert</a>
+          </div>
+          <div class="card">
+            <h2><i class="fas fa-rocket"></i>
+            <br />Random Pick</h2>
+            <a href="/entries/${randomIdx()}">Not sure where to start?</a>
+          </div>
         </div>
         <div id="entry-list">
           ${entries.map( entry => `
@@ -74,6 +94,9 @@ app.get( '/entries/:ID', (request, response) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/style.css" />
         <title>Fourteeners ID: ${ID}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
       </head>
       <body>
         <div id="nav">

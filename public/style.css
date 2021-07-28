@@ -1,11 +1,13 @@
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   text-align: center;
   margin: 0;
 }
 
 #main-content {
   background-image: url("https://www.14ers.com/photos/wilsongroup/peakphotos/large/200803_Wils01.jpg");
+  background-blend-mode: multiply;
+  background-color:rgb(228, 228, 228);
   background-size: cover;
   background-position: top center;
   background-attachment: fixed;
@@ -43,15 +45,17 @@ h1,h2 {
 h2 {
   font-size: 1.5em;
   padding: .5em;
-  color: dimgrey;
-  font-family: Arial, Helvetica, sans-serif;
+  color: whitesmoke;
+  font-family: 'Permanent Marker', cursive;
+  letter-spacing: 4px;
 }
 
 .h3 {
   /* color:rgb(243, 243, 243); */
   color:lightgoldenrodyellow;
   font-size: 2em;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Permanent Marker', cursive;
+  letter-spacing: 4px;
 }
 
 .description {
@@ -59,7 +63,7 @@ h2 {
   font-style: italic; 
   font-size: 1.1em;
   color: whitesmoke;
-  margin-top: .5em;
+  margin-top: 1em;
   text-align: center;
 }
 
@@ -74,7 +78,7 @@ h2 {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: rgb(83, 135, 192);
+  background-color: rgb(76, 121, 170);
   display: block;
   justify-content: center;
   align-items: center;
@@ -131,6 +135,42 @@ li img {
   border-radius: 5px;
 }
 
+.entryContainer h2 {
+  color: dimgrey;
+}
+
+#card-container {
+  width: 75%;
+  margin: 2em auto 25rem auto;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #c96131;
+  color: whitesmoke;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 5px;
+  width: 33%;
+  cursor: pointer;
+  border: 1px solid rgb(248, 248, 221);
+}
+
+.card a{
+  text-decoration: none;
+  color: whitesmoke;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  /* font-style: italic; */
+}
+
+i {
+  font-size: 2em;
+  margin-bottom: .1em;
+}
+
 #hero {
   background-size: cover;
   height: 300px;
@@ -180,6 +220,8 @@ li img {
 
   #hero h1 {
     padding-top: 5em;
+    font-family: 'Permanent Marker', cursive;
+    letter-spacing: 4px;
   }
 }
 
