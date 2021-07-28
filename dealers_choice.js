@@ -12,7 +12,7 @@ app.use(staticMiddleWare);
 app.get("/", (request, response) => {
   const entries = postBank.list();
   let randomIdx = () => Math.floor(Math.random() * entries.length);
-  const html = `
+  const homeHtml = `
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -31,6 +31,7 @@ app.get("/", (request, response) => {
       </div>
       <div id="main-content">
       <h1>The Fourtneeners</h1>
+      <p class="description"> <strong>Fourteener</strong> fȯr-ˈtēn-ər<br /> A mountain peek with an elevation of at least 14,000 ft (4267 m).</p>
         <div id="guess-button">
           <h2 id="guess-heading"><a href="/entries/${randomIdx()}">Take a guess!</a></h2>
         </div>
@@ -57,14 +58,14 @@ app.get("/", (request, response) => {
     </script>
   </html>
   `
-  response.send(html);
+  response.send(homeHtml);
 })
 
 app.get( '/entries/:ID', (request, response) => {
   console.log(request.params.ID);
   const ID = request.params.ID;
   const entry = postBank.find(ID);
-  const html = `
+  const pageHtml = `
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -91,7 +92,7 @@ app.get( '/entries/:ID', (request, response) => {
       </body>
     </html>
   `
-  response.send(html);
+  response.send(pageHtml);
 })
 
 const PORT = 1337;
