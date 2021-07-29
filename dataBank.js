@@ -67,7 +67,9 @@ const getAllPeaksFromRange = range => data.filter(mountain => mountain['Mountain
 // Can not contain duplicates, even if you try
 
 console.log(getAllPeaksFromRange('Elk Mountains'));
-console.log('hi')
+console.log(getAllMountainRanges());
+console.log('hi');
+
 const list = () => {
   return [...data]
 };

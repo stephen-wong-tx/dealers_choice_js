@@ -122,6 +122,21 @@ li img {
   background-color: #c96131;
 }
 
+
+
+input,label {
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+}
+
+input[type=checkbox]:checked + label {
+  color:#ff651e;
+}
+
 #entry-list {
   width: 75%;
   margin: 0 auto;
@@ -149,27 +164,74 @@ li img {
 }
 
 .card {
-  background-color: #c96131;
+  background-color: #485f6e; 
+  opacity: .98;
   color: whitesmoke;
   padding: 1rem;
   margin: 1rem;
   border-radius: 5px;
   width: 33%;
-  cursor: pointer;
   border: 1px solid rgb(248, 248, 221);
+}
+
+#cta {
+  background-color: #c96131;
+  cursor: pointer;
+  opacity: 1;
+  width: 75%;
+  padding: .5rem;
+}
+
+#cta:hover {
+  text-shadow: 1px 1px 1px #3e6c7c;
+}
+
+#rocket {
+  margin-bottom: .5em;
+}
+
+#rocket:hover {
+  transform: rotate(25deg);
+  transition: .1s ease-in;
 }
 
 .card a{
   text-decoration: none;
-  color: whitesmoke;
+  color:lightgrey;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   /* font-style: italic; */
+}
+
+.checkboxContainer {
+  margin-top: 1em;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap:wrap;
+  background-color: #d3d3d3;
+  opacity: 1 !important;
+  border-radius: 5px;
+  padding: .5em;
+  color: #485f6e;
+}
+
+.active {
+  color: #c96131;
+}
+
+.check-box  {
+  margin: .8em .5em 0 .5em;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
 i {
   font-size: 2em;
   margin-bottom: .1em;
+  transition: .1s ease-out;
 }
+
+
 
 #hero {
   background-size: cover;
@@ -225,3 +287,54 @@ i {
   }
 }
 
+@media screen and (max-width: 980px) {
+  .card {
+    width: 75%;
+  }
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #da8761;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #c77651;
+  cursor: pointer;
+}
+#myRange {
+  margin-top: 3em;
+}
+
+#slider-ul{
+  margin: 0;
+  padding: .1em;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}

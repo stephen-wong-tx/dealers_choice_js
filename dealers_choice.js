@@ -41,6 +41,32 @@ app.get("/", (request, response) => {
             <h2><i class="fas fa-mountain"></i>
             <br />Mountain Ranges</h2>
             <a href="/entries/ranges">Choose by location</a>
+              <div class="checkboxContainer">
+                <div class="check-box">
+                  <input type="checkbox" id="Elk Mountains" name="Elk Mountains" value="Elk Mountains">
+                  <label for="Elk Mountains">Elk Mountains</label>
+                </div>
+                <div class="check-box">
+                  <input type="checkbox" id="Sawatch Range" name="Sawatch Range" value="Sawatch Range">
+                  <label for="Sawatch Range">Sawatch Range</label>
+                </div>
+                <div class="check-box">
+                  <input type="checkbox" id="Sangre De Cristo Range" name="Sangre De Cristo Range" value="Sangre De Cristo Range">
+                  <label for="Sangre De Cristo Range">Sangre De Cristo Range</label>
+                </div>
+                <div class="check-box">
+                  <input type="checkbox" id="Mosquito Range" name="Mosquito Range" value="Mosquito Range">            
+                  <label for="Mosquito Range">Mosquito Range</label>
+                </div>
+                <div class="check-box">
+                  <input type="checkbox" id="San Juan Mountains" name="San Juan Mountains" value="San Juan Mountains">
+                  <label for="San Juan Mountains">San Juan Mountains</label>
+                </div>
+                <div class="check-box">
+                  <input type="checkbox" id="Front Range" name="Front Range" value="Front Range">                
+                  <label for="Front Range">Front Range</label>
+                </div>
+              </div>
           </div>
           <div class="card">
             
@@ -48,13 +74,22 @@ app.get("/", (request, response) => {
             <br />
             Skill Levels</h2>
             <a href="/entries/skill-level">Climbs from beginner to expert</a>
+            <div class="slidecontainer">
+              <input type="range" min="1" max="4" value="1" class="slider" id="myRange">
+              <ul id="slider-ul">
+                <li id="easy" value="1">Easy</li>
+                <li id="intermediate" value="2">Intermediate</li>
+                <li id="hard" value="3">Hard</li>
+                <li id="extreme" value="4">Extreme</li>
+              </ul>
+            </div>
           </div>
-          <div class="card">
-            <h2><i class="fas fa-rocket"></i>
-            <br />Random Pick</h2>
-            <a href="/entries/${randomIdx()}">Not sure where to start?</a>
+          <div class="card" id="cta">
+            <h2><i class="fas fa-rocket" id="rocket"></i>
+            <br />Get Your Mountains <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i></h2>
           </div>
         </div>
+        <a href="/entries/${randomIdx()}">Not sure where to start?</a>
         <div id="entry-list">
           ${entries.map( entry => `
             <div class="entryContainer">
@@ -67,14 +102,49 @@ app.get("/", (request, response) => {
         </div>
     </div>
     </body>
-    <script>
-      let guessButton = document.getElementById("guess-button");
-      guessButton.addEventListener("click", function(event) {
-        console.log(event);
-        console.log(event.target);
-        console.log('event target ID: ' + event.target.id)
+    <script> 
+      let allCheckBoxes = document.querySelectorAll('input[type=checkbox]');
+      let skillSlider = document.getElementById("myRange");
+      let ctaButton = document.getElementById("cta");
+      const sliderUl = document.getElementById("slider-ul");
+      const sliderUlChildren = sliderUl.childNodes;
+
+      skillSlider.oninput = function() {
+        const easy = document.getElementById("easy");
+        const intermediate = document.getElementById("intermediate");
+        const hard = document.getElementById("hard");
+        const extreme = document.getElementById("extreme");
+
+        const sliderLabels = [easy, intermediate, hard, extreme];
+
+        let skillValue = Number(skillSlider.value);
+
+        function setActiveSliderLabel(sliderValue) {
+          sliderLabels.forEach(label => {
+            if (label.value === sliderValue) label.classList.add('active');
+            else label.classList.remove('active');
+          })
+        }
+        setActiveSliderLabel(skillValue);
+      }
+
+      ctaButton.addEventListener("click", function(event) {
+        let selectedMountainRanges = [];
+        let skillValue = skillSlider.value;
+
+        allCheckBoxes.forEach(box => {
+          if(box.checked) selectedMountainRanges.push(box.value);
+        });
+
+        if (selectedMountainRanges.length === 0) allCheckBoxes.forEach(box => selectedMountainRanges.push(box.value));
+
+        let mountainFilterCriteria = {
+          ranges: selectedMountainRanges,
+          maxSkill: skillValue
+        }
+        console.log(mountainFilterCriteria);
       });
-      
+
     </script>
   </html>
   `
