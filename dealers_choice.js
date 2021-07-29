@@ -144,16 +144,7 @@ app.get("/", (request, response) => {
           })
         }
         setActiveSliderLabel(skillValue);
-      }
-
-      let allMountainEntries = document.getElementById("entry-list").children;
-      let filteredMountains2 = document.getElementsByClassName('2 Elk');
-
-
-      Array.prototype.forEach.call(filteredMountains2, function(mountain) {
-        mountain.classList.remove('hidden');
-      })
-      
+      }      
 
       ctaButton.addEventListener("click", function(event) {
         let selectedMountainRanges = [];
@@ -174,9 +165,6 @@ app.get("/", (request, response) => {
         mountainFilterCriteria.ranges.forEach(range => newURL += range+"&")
         window.location.href = "/entries/ranges/"+newURL+skillValue;
       });
-
-      const getSkillValue = () => 2;
-
 
 
     </script>
@@ -212,18 +200,20 @@ app.get( '/entries/:ID', (request, response) => {
         <div id="hero" style="background-image: url(${entry.photo})">
           <h1 class="h3">${entry["Mountain Peak"].toUpperCase()}</h1>
         </div>
-        <div class="indiv-entry-container">
-          <p class="indiv-subheading"><strong>${entry["Mountain Peak"]}</strong></p>
-          <p>Range: <strong>${entry["Mountain Range"]}</strong></p>
-          <p>Elevation: <strong>${entry.Elevation_ft}</strong></p>
-          <ul>
-            <li>Difficulty: ${entry.DifficultyDescription}</li>
-            <li>Standard Route: ${entry["Standard Route"]}</li>
-            <li>Hiking Distance: ${entry.Distance_mi}</li>
-            <li>Elevation gain: ${entry["Elevation Gain_ft"]}</li>
-            <li>Traffic Low: ${entry["Traffic Low"]}</li>
-            <li>Traffic High: ${entry["Traffic High"]}</li>
-          </ul>
+        <div class="container">
+          <div class="indiv-entry-container">
+            <p class="indiv-subheading"><strong>${entry["Mountain Peak"]}</strong></p>
+            <p>Range: <strong>${entry["Mountain Range"]}</strong></p>
+            <p>Elevation: <strong>${entry.Elevation_ft}</strong></p>
+            <ul>
+              <li>Difficulty: ${entry.DifficultyDescription}</li>
+              <li>Standard Route: ${entry["Standard Route"]}</li>
+              <li>Hiking Distance: ${entry.Distance_mi}</li>
+              <li>Elevation gain: ${entry["Elevation Gain_ft"]}</li>
+              <li>Traffic Low: ${entry["Traffic Low"]}</li>
+              <li>Traffic High: ${entry["Traffic High"]}</li>
+            </ul>
+          </div>
         </div>
       </body>
     </html>
@@ -237,8 +227,6 @@ app.get( '/entries/ranges/:RangeIDs', (request, response) => {
   let rangeArr = [];
   if (rangeID.includes("&")) {
     rangeArr = rangeID.split("&");
-    // let rangeObj = rangeArr.reduce((result, range) => result.range = range, {});
-    // rangeID = rangeObj;
   }
   else {
     rangeAArr = [rangeID];

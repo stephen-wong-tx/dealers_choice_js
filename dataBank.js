@@ -84,19 +84,9 @@ const getAllPeaksFromDifficulty = (difficultyLevel) => {
   return [...filteredPeaks];
 };
 
-
-
-// Set: add, delete, has
-// Can not contain duplicates, even if you try
-
-console.log(getAllPeaksFromRange('Elk Mountains'));
-console.log(getAllMountainRanges());
-console.log('hi');
-
 const list = () => {
   return [...data]
 };
-
 
 const find = ID => {
   const entry = data.find(entry => entry.ID === +ID);
