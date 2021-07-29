@@ -29,8 +29,12 @@ app.get("/", (request, response) => {
     </head>
     <body>
       <div id="nav">
+          <ul id="sourceInfo">
+            <li>Project by Stephen Wong at Full Stack Academy</li>
+            <li style="float:right"><span>Data Source: <a href="https://www.14ers.com/" target="_blank">14ers.com</a></span></li>
+          </ul>
           <ul>
-            <li class="link" style="float:right"><a class="active" href="#about">About</a></li>
+            <li class="link" style="float:right"><a class="active" href="https://github.com/stephen-wong-tx/dealers_choice_js" target="_blank">About</a></li>
             <li id="icon"><a href="/"><img src="/fourteeners-home-alt.png" alt="The number 14 in front of a mountain range drawing"></a></li>
           </ul>
       </div>
@@ -38,10 +42,10 @@ app.get("/", (request, response) => {
       <h1>The Fourtneeners</h1>
       <p class="description"> <strong>Fourteener</strong> fȯr-ˈtēn-ər<br /> A mountain peek with an elevation of at least 14,000 ft (4267 m).</p>
         <div id="card-container">
-          <div class="card">
+          <div class="regular card">
             <h2><i class="fas fa-mountain"></i>
             <br />Mountain Ranges</h2>
-            <a href="/entries/ranges">Choose by location</a>
+            Choose by location
               <div class="checkboxContainer">
                 <div class="check-box">
                   <input type="checkbox" id="1" name="Elk Mountains" value="Elk Mountains">
@@ -69,11 +73,11 @@ app.get("/", (request, response) => {
                 </div>
               </div>
           </div>
-          <div class="card">
+          <div class="regular card">
             <h2><i class="fas fa-tachometer-alt"></i> 
             <br />
             Skill Levels</h2>
-            <a href="/entries/skill-level">Find climbs from beginner to expert</a>
+            Find climbs from beginner to expert
             <div class="slidecontainer">
               <input type="range" min="1" max="4" value="1" class="slider" id="myRange">
               <ul id="slider-ul">
@@ -84,18 +88,19 @@ app.get("/", (request, response) => {
               </ul>
             </div>
             <div class="button" id="difficultyButton">
-              Find mountain ranges <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i>
+              Find ranges by skill level <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i>
             </div>
           </div>
           <div class="card" id="cta">
             <h2><i class="fas fa-rocket" id="rocket"></i>
-            <br />Feeling spontaneous?</h2>
-            Take a random pick! <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i>
+            <br />Find your mountains! <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i></h2>
+          </div>
+          <div class="card" id="random">
+            <a href="/entries/${randomIdx()}">Not sure where to start? <br />Take a random pick!</a>
           </div>
         </div>
         <div class="sub-heading">
           <h2>Or check out all of the Fourteeners:</h2>
-          <a href="/entries/${randomIdx()}">Not sure where to start?</a>
         </div>
         <div id="entry-list">
           ${entries.map( entry => `
@@ -103,9 +108,9 @@ app.get("/", (request, response) => {
               <h2>${entry["Mountain Peak"]}</h2>
               <p>Range: ${entry["Mountain Range"]}</p>
               <p>Elevation: ${entry.Elevation_ft}</p>
-              <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
+              <div id="button-${entry.ID}" class="details-container"><a href="/entries/${entry.ID}">See details</a></div>
             </div>
-          `)}
+          `).join("")}
         </div>
     </div>
     </body>
@@ -120,7 +125,6 @@ app.get("/", (request, response) => {
 
       difficultyButton.addEventListener("click", function(event) {
         let skillValue = skillSlider.value;
-        console.log('skillValue:' , skillValue);
         window.location.href = "/entries/difficulty/"+skillValue;
       })
 
@@ -144,26 +148,12 @@ app.get("/", (request, response) => {
 
       let allMountainEntries = document.getElementById("entry-list").children;
       let filteredMountains2 = document.getElementsByClassName('2 Elk');
-      console.log(filteredMountains2);
+
 
       Array.prototype.forEach.call(filteredMountains2, function(mountain) {
         mountain.classList.remove('hidden');
       })
       
-      const generateFilteredContent = criteria => {
-        let range = criteria.range;
-        let maxSkill = criteria.maxSkill;
-        let filteredMountains = document.getElementsByClassName('2');
-        console.log('filtered mountains:' , filteredMountains);
-        
-
-
-        let allMountainEntries2 = [...allMountainEntries];
-        allMountainEntries2.forEach(entry => {
-          console.log('ignore this');
-        });
-
-      }
 
       ctaButton.addEventListener("click", function(event) {
         let selectedMountainRanges = [];
@@ -180,7 +170,6 @@ app.get("/", (request, response) => {
           maxSkill: skillValue
         }
 
-        console.log('check this out', mountainFilterCriteria);
         let newURL = "";
         mountainFilterCriteria.ranges.forEach(range => newURL += range+"&")
         window.location.href = "/entries/ranges/"+newURL+skillValue;
@@ -213,7 +202,7 @@ app.get( '/entries/:ID', (request, response) => {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
       </head>
-      <body>
+      <body id="indiv-body">
         <div id="nav">
           <ul style="background-color: lightslategrey">
             <li class="link" style="float:right"><a class="active" href="#about">About</a></li>
@@ -223,9 +212,18 @@ app.get( '/entries/:ID', (request, response) => {
         <div id="hero" style="background-image: url(${entry.photo})">
           <h1 class="h3">${entry["Mountain Peak"].toUpperCase()}</h1>
         </div>
-        <div>
-          <p>Range: ${entry["Mountain Range"]}</p>
-          <p>Elevation: ${entry.Elevation_ft}</p>
+        <div class="indiv-entry-container">
+          <p class="indiv-subheading"><strong>${entry["Mountain Peak"]}</strong></p>
+          <p>Range: <strong>${entry["Mountain Range"]}</strong></p>
+          <p>Elevation: <strong>${entry.Elevation_ft}</strong></p>
+          <ul>
+            <li>Difficulty: ${entry.DifficultyDescription}</li>
+            <li>Standard Route: ${entry["Standard Route"]}</li>
+            <li>Hiking Distance: ${entry.Distance_mi}</li>
+            <li>Elevation gain: ${entry["Elevation Gain_ft"]}</li>
+            <li>Traffic Low: ${entry["Traffic Low"]}</li>
+            <li>Traffic High: ${entry["Traffic High"]}</li>
+          </ul>
         </div>
       </body>
     </html>
@@ -278,9 +276,9 @@ app.get( '/entries/ranges/:RangeIDs', (request, response) => {
             <h2>${entry["Mountain Peak"]}</h2>
             <p>Range: ${entry["Mountain Range"]}</p>
             <p>Elevation: ${entry.Elevation_ft}</p>
-            <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
+            <div id="button-${entry.ID}" class="details-container"><a href="/entries/${entry.ID}">See details</a></div>
           </div>
-        `)}
+        `).join("")}
       </div>
       </body>
     </html>
@@ -322,9 +320,9 @@ app.get( '/entries/difficulty/:difficultyID', (request, response) => {
             <h2>${entry["Mountain Peak"]}</h2>
             <p>Range: ${entry["Mountain Range"]}</p>
             <p>Elevation: ${entry.Elevation_ft}</p>
-            <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
+            <div id="button-${entry.ID}" class="details-container"><a href="/entries/${entry.ID}">See details</a></div>
           </div>
-        `)}
+        `).join("")}
       </div>
       </body>
     </html>
@@ -335,20 +333,3 @@ app.get( '/entries/difficulty/:difficultyID', (request, response) => {
 const PORT = 1337;
 
 app.listen(PORT, () => console.log(`App listening in port ${PORT}`));
-
-// overwhelmed by your options? 
-
-// let entryListHtml = 
-// <div class="entryContainer">
-//   <h2>${entry["Mountain Peak"]}</h2>
-//   <p>Range: ${entry["Mountain Range"]}</p>
-//   <p>Elevation: ${entry.Elevation_ft}</p>
-//   <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
-// </div>
-
-// let filteredContent = ${entries}.filter(entry => {
-//   return criteria.ranges.includes(entry["Mountain Range"]) && entry.Difficulty <= criteria.maxSkill)
-// };
-
-
-// let filteredDifficulty = ${filteredDificultyPeaks(skillValue)};
