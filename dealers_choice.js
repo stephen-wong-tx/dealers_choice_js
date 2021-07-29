@@ -167,7 +167,7 @@ app.get("/", (request, response) => {
 
       ctaButton.addEventListener("click", function(event) {
         let selectedMountainRanges = [];
-        let skillValue = skillSlider.value;
+        let skillValue = "D" + skillSlider.value;
 
         allCheckBoxes.forEach(box => {
           if(box.checked) selectedMountainRanges.push(box.id);
@@ -182,8 +182,8 @@ app.get("/", (request, response) => {
 
         console.log('check this out', mountainFilterCriteria);
         let newURL = "";
-        mountainFilterCriteria.ranges.forEach(range => newURL += "&"+range)
-        window.location.href = "/entries/ranges/"+newURL;
+        mountainFilterCriteria.ranges.forEach(range => newURL += range+"&")
+        window.location.href = "/entries/ranges/"+newURL+skillValue;
       });
 
       const getSkillValue = () => 2;
@@ -248,6 +248,7 @@ app.get( '/entries/ranges/:RangeIDs', (request, response) => {
   const difficulty = request.params.Difficulty;
   console.log('rangeArr:', rangeArr);
   let filteredEntries = postBank.getAllPeaksFromRange(rangeArr);
+  console.log('filteredEntries:', filteredEntries);
   const filteredPageHtml = `
     <!DOCTYPE html>
     <html lang="en">
@@ -269,7 +270,7 @@ app.get( '/entries/ranges/:RangeIDs', (request, response) => {
           </ul>
         </div>
         <div id="hero" style="background-image: url(https://www.14ers.com/photos/maroongroup/peakphotos/large/200807_NMar01.jpg)">
-          <h1 class="h3">FILTERED RESULTS [DYNAMIC NAME PENDING]</h1>
+          <h1 class="h3">FILTERED RESULTS</h1>
         </div>
         <div id="entry-list">
         ${filteredEntries.map( entry => `

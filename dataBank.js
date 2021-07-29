@@ -61,11 +61,18 @@ const data = [
 
 const getAllMountainRanges = () =>  [...data.reduce((result, mountain) => result.add(mountain['Mountain Range']), new Set())];
 
-const getAllPeaksFromRange = (rangeArr) => {
-  let filteredPeaks = data.filter(mountain => {
+const getAllPeaksFromRange = (args) => {
+  let rangeArr = [...args];
+  let difficultyIdx = rangeArr.findIndex(filterCriteria => filterCriteria.includes("D"));
+  let difficultyValue = rangeArr.splice(difficultyIdx, 1);
+  console.log('difficulty value:' , difficultyValue, 'rangeArr:', rangeArr);
+  let filteredPeaksByDifficulty = data.filter(mountain => {
+    return (difficultyValue[0].includes(mountain.Difficulty));
+  })
+  console.log('TEST:', filteredPeaksByDifficulty);
+  let filteredPeaks = filteredPeaksByDifficulty.filter(mountain => {
     return (rangeArr.includes(String(mountain.RangeID)));
   });
-  console.log(filteredPeaks);
   return [...filteredPeaks];
 };
 
