@@ -218,6 +218,14 @@ input[type=checkbox]:checked + label {
   color: #c96131;
 }
 
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
 .check-box  {
   margin: .8em .5em 0 .5em;
   width: 100%;
@@ -337,4 +345,12 @@ i {
   list-style-type: none;
   display: flex;
   justify-content: space-between;
+}
+
+.filteredEntry {
+  background-color: rgb(99, 113, 128);  
+}
+
+.filteredEntry h2 {
+  color:rgb(248, 248, 221);
 }

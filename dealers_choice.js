@@ -92,7 +92,7 @@ app.get("/", (request, response) => {
         <a href="/entries/${randomIdx()}">Not sure where to start?</a>
         <div id="entry-list">
           ${entries.map( entry => `
-            <div class="entryContainer">
+            <div class="entryContainer hidden ${entry.Difficulty} ${entry["Mountain Range"]}" id="entry${entry.ID}" difficulty="${entry.Difficulty}" mountainRange="${entry['Mountain Range']}">
               <h2>${entry["Mountain Peak"]}</h2>
               <p>Range: ${entry["Mountain Range"]}</p>
               <p>Elevation: ${entry.Elevation_ft}</p>
@@ -103,11 +103,12 @@ app.get("/", (request, response) => {
     </div>
     </body>
     <script> 
-      let allCheckBoxes = document.querySelectorAll('input[type=checkbox]');
-      let skillSlider = document.getElementById("myRange");
-      let ctaButton = document.getElementById("cta");
+      const allCheckBoxes = document.querySelectorAll('input[type=checkbox]');
+      const skillSlider = document.getElementById("myRange");
+      const ctaButton = document.getElementById("cta");
       const sliderUl = document.getElementById("slider-ul");
       const sliderUlChildren = sliderUl.childNodes;
+      const entryList = document.getElementById("entry-list");
 
       skillSlider.oninput = function() {
         const easy = document.getElementById("easy");
@@ -116,7 +117,6 @@ app.get("/", (request, response) => {
         const extreme = document.getElementById("extreme");
 
         const sliderLabels = [easy, intermediate, hard, extreme];
-
         let skillValue = Number(skillSlider.value);
 
         function setActiveSliderLabel(sliderValue) {
@@ -126,6 +126,29 @@ app.get("/", (request, response) => {
           })
         }
         setActiveSliderLabel(skillValue);
+      }
+
+      let allMountainEntries = document.getElementById("entry-list").children;
+      let filteredMountains2 = document.getElementsByClassName('2 Elk');
+      console.log(filteredMountains2);
+
+      Array.prototype.forEach.call(filteredMountains2, function(mountain) {
+        mountain.classList.remove('hidden');
+      })
+      
+      const generateFilteredContent = criteria => {
+        let range = criteria.range;
+        let maxSkill = criteria.maxSkill;
+        let filteredMountains = document.getElementsByClassName('2');
+        console.log('filtered mountains:' , filteredMountains);
+        
+
+
+        let allMountainEntries2 = [...allMountainEntries];
+        allMountainEntries2.forEach(entry => {
+          console.log('ignore this');
+        });
+
       }
 
       ctaButton.addEventListener("click", function(event) {
@@ -142,8 +165,12 @@ app.get("/", (request, response) => {
           ranges: selectedMountainRanges,
           maxSkill: skillValue
         }
+
         console.log(mountainFilterCriteria);
+        return generateFilteredContent(mountainFilterCriteria);
       });
+
+
 
     </script>
   </html>
@@ -188,8 +215,65 @@ app.get( '/entries/:ID', (request, response) => {
   response.send(pageHtml);
 })
 
+app.get( '/entries/ranges/:RangeIDs', (request, response) => {
+  console.log(request.params.Difficulty);
+  console.log(request.params.RangeIDs);
+  const rangeID = request.params.RangeIDs;
+  const difficulty = request.params.Difficulty;
+  const filteredEntries = postBank.getAllPeaksFromRange(rangeID);
+  const filteredPageHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/style.css" />
+        <title>Fourteeners ID: Pending</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+      </head>
+      <body>
+        <div id="nav">
+          <ul style="background-color: lightslategrey">
+            <li class="link" style="float:right"><a class="active" href="#about">About</a></li>
+            <li id="icon"><a href="/"><img src="/fourteeners-home-alt.png" alt="The number 14 in front of a mountain range drawing"></a></li>
+          </ul>
+        </div>
+        <div id="hero" style="background-image: url(https://www.14ers.com/photos/maroongroup/peakphotos/large/200807_NMar01.jpg)">
+          <h1 class="h3">FILTERED RESULTS [DYNAMIC NAME PENDING]</h1>
+        </div>
+        <div id="entry-list">
+        ${filteredEntries.map( entry => `
+          <div class="entryContainer filteredEntry" id="entry${entry.ID}">
+            <h2>${entry["Mountain Peak"]}</h2>
+            <p>Range: ${entry["Mountain Range"]}</p>
+            <p>Elevation: ${entry.Elevation_ft}</p>
+            <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
+          </div>
+        `)}
+      </div>
+      </body>
+    </html>
+  `
+  response.send(filteredPageHtml);
+})
+
 const PORT = 1337;
 
 app.listen(PORT, () => console.log(`App listening in port ${PORT}`));
 
 // overwhelmed by your options? 
+
+// let entryListHtml = 
+// <div class="entryContainer">
+//   <h2>${entry["Mountain Peak"]}</h2>
+//   <p>Range: ${entry["Mountain Range"]}</p>
+//   <p>Elevation: ${entry.Elevation_ft}</p>
+//   <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
+// </div>
+
+// let filteredContent = ${entries}.filter(entry => {
+//   return criteria.ranges.includes(entry["Mountain Range"]) && entry.Difficulty <= criteria.maxSkill)
+// };
