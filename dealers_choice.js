@@ -11,6 +11,7 @@ app.use(staticMiddleWare);
 
 app.get("/", (request, response) => {
   const entries = postBank.list();
+  const filteredDificultyPeaks = postBank.getAllPeaksFromDifficulty;
   let randomIdx = () => Math.floor(Math.random() * entries.length);
   const homeHtml = `
   <!DOCTYPE html>
@@ -43,37 +44,36 @@ app.get("/", (request, response) => {
             <a href="/entries/ranges">Choose by location</a>
               <div class="checkboxContainer">
                 <div class="check-box">
-                  <input type="checkbox" id="Elk Mountains" name="Elk Mountains" value="Elk Mountains">
+                  <input type="checkbox" id="1" name="Elk Mountains" value="Elk Mountains">
                   <label for="Elk Mountains">Elk Mountains</label>
                 </div>
                 <div class="check-box">
-                  <input type="checkbox" id="Sawatch Range" name="Sawatch Range" value="Sawatch Range">
+                  <input type="checkbox" id="6" name="Sawatch Range" value="Sawatch Range">
                   <label for="Sawatch Range">Sawatch Range</label>
                 </div>
                 <div class="check-box">
-                  <input type="checkbox" id="Sangre De Cristo Range" name="Sangre De Cristo Range" value="Sangre De Cristo Range">
+                  <input type="checkbox" id="5" name="Sangre De Cristo Range" value="Sangre De Cristo Range">
                   <label for="Sangre De Cristo Range">Sangre De Cristo Range</label>
                 </div>
                 <div class="check-box">
-                  <input type="checkbox" id="Mosquito Range" name="Mosquito Range" value="Mosquito Range">            
+                  <input type="checkbox" id="3" name="Mosquito Range" value="Mosquito Range">            
                   <label for="Mosquito Range">Mosquito Range</label>
                 </div>
                 <div class="check-box">
-                  <input type="checkbox" id="San Juan Mountains" name="San Juan Mountains" value="San Juan Mountains">
+                  <input type="checkbox" id="4" name="San Juan Mountains" value="San Juan Mountains">
                   <label for="San Juan Mountains">San Juan Mountains</label>
                 </div>
                 <div class="check-box">
-                  <input type="checkbox" id="Front Range" name="Front Range" value="Front Range">                
+                  <input type="checkbox" id="2" name="Front Range" value="Front Range">                
                   <label for="Front Range">Front Range</label>
                 </div>
               </div>
           </div>
           <div class="card">
-            
             <h2><i class="fas fa-tachometer-alt"></i> 
             <br />
             Skill Levels</h2>
-            <a href="/entries/skill-level">Climbs from beginner to expert</a>
+            <a href="/entries/skill-level">Find climbs from beginner to expert</a>
             <div class="slidecontainer">
               <input type="range" min="1" max="4" value="1" class="slider" id="myRange">
               <ul id="slider-ul">
@@ -83,16 +83,23 @@ app.get("/", (request, response) => {
                 <li id="extreme" value="4">Extreme</li>
               </ul>
             </div>
+            <div class="button" id="difficultyButton">
+              Find mountain ranges <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i>
+            </div>
           </div>
           <div class="card" id="cta">
             <h2><i class="fas fa-rocket" id="rocket"></i>
-            <br />Get Your Mountains <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i></h2>
+            <br />Feeling spontaneous?</h2>
+            Take a random pick! <i class="fas fa-long-arrow-alt-right" style="font-size: 1em;"></i>
           </div>
         </div>
-        <a href="/entries/${randomIdx()}">Not sure where to start?</a>
+        <div class="sub-heading">
+          <h2>Or check out all of the Fourteeners:</h2>
+          <a href="/entries/${randomIdx()}">Not sure where to start?</a>
+        </div>
         <div id="entry-list">
           ${entries.map( entry => `
-            <div class="entryContainer hidden ${entry.Difficulty} ${entry["Mountain Range"]}" id="entry${entry.ID}" difficulty="${entry.Difficulty}" mountainRange="${entry['Mountain Range']}">
+            <div class="entryContainer ${entry.Difficulty} ${entry["Mountain Range"]}" id="entry${entry.ID}" difficulty="${entry.Difficulty}" mountainRange="${entry['Mountain Range']}">
               <h2>${entry["Mountain Peak"]}</h2>
               <p>Range: ${entry["Mountain Range"]}</p>
               <p>Elevation: ${entry.Elevation_ft}</p>
@@ -106,9 +113,16 @@ app.get("/", (request, response) => {
       const allCheckBoxes = document.querySelectorAll('input[type=checkbox]');
       const skillSlider = document.getElementById("myRange");
       const ctaButton = document.getElementById("cta");
+      const difficultyButton = document.getElementById("difficultyButton");
       const sliderUl = document.getElementById("slider-ul");
       const sliderUlChildren = sliderUl.childNodes;
       const entryList = document.getElementById("entry-list");
+
+      difficultyButton.addEventListener("click", function(event) {
+        let skillValue = skillSlider.value;
+        console.log('skillValue:' , skillValue);
+        window.location.href = "/entries/difficulty/"+skillValue;
+      })
 
       skillSlider.oninput = function() {
         const easy = document.getElementById("easy");
@@ -156,19 +170,23 @@ app.get("/", (request, response) => {
         let skillValue = skillSlider.value;
 
         allCheckBoxes.forEach(box => {
-          if(box.checked) selectedMountainRanges.push(box.value);
+          if(box.checked) selectedMountainRanges.push(box.id);
         });
 
-        if (selectedMountainRanges.length === 0) allCheckBoxes.forEach(box => selectedMountainRanges.push(box.value));
+        if (selectedMountainRanges.length === 0) allCheckBoxes.forEach(box => selectedMountainRanges.push(box.id));
 
         let mountainFilterCriteria = {
           ranges: selectedMountainRanges,
           maxSkill: skillValue
         }
 
-        console.log(mountainFilterCriteria);
-        return generateFilteredContent(mountainFilterCriteria);
+        console.log('check this out', mountainFilterCriteria);
+        let newURL = "";
+        mountainFilterCriteria.ranges.forEach(range => newURL += "&"+range)
+        window.location.href = "/entries/ranges/"+newURL;
       });
+
+      const getSkillValue = () => 2;
 
 
 
@@ -216,11 +234,20 @@ app.get( '/entries/:ID', (request, response) => {
 })
 
 app.get( '/entries/ranges/:RangeIDs', (request, response) => {
-  console.log(request.params.Difficulty);
   console.log(request.params.RangeIDs);
-  const rangeID = request.params.RangeIDs;
+  let rangeID = request.params.RangeIDs;
+  let rangeArr = [];
+  if (rangeID.includes("&")) {
+    rangeArr = rangeID.split("&");
+    // let rangeObj = rangeArr.reduce((result, range) => result.range = range, {});
+    // rangeID = rangeObj;
+  }
+  else {
+    rangeAArr = [rangeID];
+  }
   const difficulty = request.params.Difficulty;
-  const filteredEntries = postBank.getAllPeaksFromRange(rangeID);
+  console.log('rangeArr:', rangeArr);
+  let filteredEntries = postBank.getAllPeaksFromRange(rangeArr);
   const filteredPageHtml = `
     <!DOCTYPE html>
     <html lang="en">
@@ -260,6 +287,50 @@ app.get( '/entries/ranges/:RangeIDs', (request, response) => {
   response.send(filteredPageHtml);
 })
 
+app.get( '/entries/difficulty/:difficultyID', (request, response) => {
+  console.log(request.params.difficultyID);
+  let difficulty = request.params.difficultyID;
+  let filteredEntries = postBank.getAllPeaksFromDifficulty(difficulty);
+  console.log("difficulty: ", difficulty, "filtered entries by skill:", filteredEntries);
+  const filteredDifficultyHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/style.css" />
+        <title>Fourteeners ID: Pending</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+      </head>
+      <body>
+        <div id="nav">
+          <ul style="background-color: lightslategrey">
+            <li class="link" style="float:right"><a class="active" href="#about">About</a></li>
+            <li id="icon"><a href="/"><img src="/fourteeners-home-alt.png" alt="The number 14 in front of a mountain range drawing"></a></li>
+          </ul>
+        </div>
+        <div id="hero" style="background-image: url(${filteredEntries[0]["photo"]})">
+          <h1 class="h3">DIFFICULTY CLASS ${filteredEntries[0]["Difficulty"]}</h1>
+        </div>
+        <div id="entry-list">
+        ${filteredEntries.map( entry => `
+          <div class="entryContainer filteredEntry" id="entry${entry.ID}">
+            <h2>${entry["Mountain Peak"]}</h2>
+            <p>Range: ${entry["Mountain Range"]}</p>
+            <p>Elevation: ${entry.Elevation_ft}</p>
+            <div id="button-${entry.ID}"><a href="/entries/${entry.ID}">see details here</a></div>
+          </div>
+        `)}
+      </div>
+      </body>
+    </html>
+  `
+  response.send(filteredDifficultyHtml);
+})
+
 const PORT = 1337;
 
 app.listen(PORT, () => console.log(`App listening in port ${PORT}`));
@@ -277,3 +348,6 @@ app.listen(PORT, () => console.log(`App listening in port ${PORT}`));
 // let filteredContent = ${entries}.filter(entry => {
 //   return criteria.ranges.includes(entry["Mountain Range"]) && entry.Difficulty <= criteria.maxSkill)
 // };
+
+
+// let filteredDifficulty = ${filteredDificultyPeaks(skillValue)};

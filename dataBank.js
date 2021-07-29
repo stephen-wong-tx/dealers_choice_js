@@ -61,10 +61,23 @@ const data = [
 
 const getAllMountainRanges = () =>  [...data.reduce((result, mountain) => result.add(mountain['Mountain Range']), new Set())];
 
-const getAllPeaksFromRange = range => {
-  let filteredPeaks = data.filter(mountain => mountain.RangeID === +range);
+const getAllPeaksFromRange = (rangeArr) => {
+  let filteredPeaks = data.filter(mountain => {
+    return (rangeArr.includes(String(mountain.RangeID)));
+  });
+  console.log(filteredPeaks);
   return [...filteredPeaks];
 };
+
+
+const getAllPeaksFromDifficulty = (difficultyLevel) => { 
+  let filteredPeaks = data.filter(mountain => {
+    return (mountain.Difficulty === +difficultyLevel);
+  });
+  return [...filteredPeaks];
+};
+
+
 
 // Set: add, delete, has
 // Can not contain duplicates, even if you try
@@ -83,4 +96,4 @@ const find = ID => {
   return {...entry};
 }
 
-module.exports = { list: list, find: find, getAllPeaksFromRange: getAllPeaksFromRange};
+module.exports = { list: list, find: find, getAllPeaksFromRange: getAllPeaksFromRange, getAllPeaksFromDifficulty: getAllPeaksFromDifficulty};

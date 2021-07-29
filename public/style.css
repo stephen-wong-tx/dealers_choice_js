@@ -156,7 +156,7 @@ input[type=checkbox]:checked + label {
 
 #card-container {
   width: 75%;
-  margin: 2em auto 25rem auto;
+  margin: 2em auto 5rem auto;
   padding-bottom: 2rem;
   display: flex;
   flex-wrap: wrap;
@@ -353,4 +353,31 @@ i {
 
 .filteredEntry h2 {
   color:rgb(248, 248, 221);
+}
+
+.button {
+  opacity: 1;
+  width: 65%;
+  padding: 1em;
+  margin: 1em auto .5em auto;
+  background-color: #c96131;
+  border-radius: 5px;
+}
+
+.button:hover {
+  text-shadow: 1px 1px 1px #3e6c7c;
+}
+
+.sub-heading {
+  background-color: rgb(99, 113, 128);
+  border-radius: 3px;
+}
+
+.sub-heading h2 {
+  color: rgb(248, 248, 221);
+  text-shadow: 2px 3px 1px #3e6c7c;
+}
+
+#difficultyButton {
+  cursor: pointer;
 }
